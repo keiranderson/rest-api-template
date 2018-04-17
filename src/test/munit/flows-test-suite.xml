@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:spring="http://www.springframework.org/schema/beans" xmlns:core="http://www.mulesoft.org/schema/mule/core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd">
+    <munit:config name="munit" doc:name="MUnit configuration"/>
+    <spring:beans>
+        <spring:import resource="classpath:flows.xml"/>
+    </spring:beans>
+    <munit:test name="get-hello-Sub_Flow_Test" description="Test">
+    	<!-- Call subflow to test -->
+        <flow-ref name="get-hello-Sub_Flow" doc:name="Flow-ref to get-hello-Sub_Flow"/>
+        <!-- Assert that output payload is not null -->
+        <munit:assert-not-null message="Payload is null." doc:name="Assert Not Null Payload"/>
+        <!-- Assert that output payload value is correct -->
+        <munit:assert-on-equals message="Greeting message does not match." expectedValue="#['Hello, World!']" actualValue="#[json:greeting]" doc:name="Assert Equals"/>
+    </munit:test>
+    <munit:test name="post-hello-Sub_Flow_Test" description="Test">
+    	<!-- Set test payload - note that it is important to specify encoding and mime type -->
+        <munit:set payload="#[getResource('sample_data/post-hello-input.json').asString()]" encoding="UTF-8" mimeType="application/json" doc:name="Set Message"/>
+        <!-- Set variable to use as comparison -->
+        <dw:transform-message doc:name="Transform Message">
+            <dw:set-variable variableName="assertGreeting"><![CDATA[%dw 1.0
+%output application/java
+---
+payload.greeting]]></dw:set-variable>
+        </dw:transform-message>
+        <!-- Call subflow and process test payload -->
+        <flow-ref name="post-hello-Sub_Flow" doc:name="Flow-ref to post-hello-Sub_Flow"/>
+        <!-- Assert that resulting output payload is not null -->
+        <munit:assert-not-null doc:name="Assert Not Null Payload" message="Payload is null."/>
+        <!-- Assert that resulting output payload value matches test input -->
+        <munit:assert-on-equals expectedValue="#[flowVars.assertGreeting]" actualValue="#[json:newGreeting]" doc:name="Assert Equals" message="Payload does not match."/>
+    </munit:test>
+</mule>

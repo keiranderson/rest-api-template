@@ -1,0 +1,30 @@
+#%RAML 0.8
+title: rest-api-template
+version: v1
+schemas: 
+  - HelloSchema: !include schemas/helloSchema.json
+    
+/hello:
+  get:
+    description: Return hello
+    responses:
+      200:
+        body:
+          application/json:
+            schema: HelloSchema
+            example: !include examples/helloExample.json
+      400:
+      500:
+  post:
+    description: Return specified greeting
+    body:
+      application/json:
+        schema: HelloSchema
+        example: !include examples/helloExample.json
+    responses:
+      200:
+        body:
+          application/json:
+            example: !include examples/postHelloResponseExample.json
+      400:
+      500:

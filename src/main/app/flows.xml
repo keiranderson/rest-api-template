@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns:metadata="http://www.mulesoft.org/schema/mule/metadata" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd">
+    <sub-flow name="get-hello-Sub_Flow">
+        <logger message="Started flow: #[flow.name]" level="INFO" doc:name="Logger"/>
+        <!-- Set payload to static hello-world JSON message -->
+        <dw:transform-message doc:name="Transform Message" metadata:id="6b514d09-887b-4adc-b15e-5bb93467235b">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+{
+	greeting: "Hello, World!"
+}]]></dw:set-payload>
+        </dw:transform-message>
+        <logger message="Completed flow: #[flow.name]" level="INFO" doc:name="Logger"/>
+    </sub-flow>
+    <sub-flow name="post-hello-Sub_Flow">
+        <logger message="Started flow: #[flow.name]" level="INFO" doc:name="Logger"/>
+        <!-- Map input message to output JSON message -->
+        <dw:transform-message doc:name="Transform Message" metadata:id="5a78bb3c-8405-482b-a6a4-a3229ed9b39a">
+            <dw:input-payload doc:sample="sample_data\json.json"/>
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+{
+	newGreeting: payload.greeting
+}]]></dw:set-payload>
+        </dw:transform-message>
+        <logger message="Completed flow: #[flow.name]" level="INFO" doc:name="Logger"/>
+    </sub-flow>
+</mule>
