@@ -6,6 +6,9 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
 http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd">
+    <sub-flow name="DUMMY">
+        <logger level="INFO" doc:name="Logger"/>
+    </sub-flow>
     <sub-flow name="get-hello-Sub_Flow">
         <logger message="Started flow: #[flow.name]" level="INFO" doc:name="Logger"/>
         <!-- Set payload to static hello-world JSON message -->
