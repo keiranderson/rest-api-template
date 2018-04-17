@@ -17,6 +17,7 @@ http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee
 	greeting: "Hello, World!"
 }]]></dw:set-payload>
         </dw:transform-message>
+        <logger message="&quot;I was added as a git exercise.&quot;" level="INFO" doc:name="Logger"/>
         <logger message="Completed flow: #[flow.name]" level="INFO" doc:name="Logger"/>
     </sub-flow>
     <sub-flow name="post-hello-Sub_Flow">
