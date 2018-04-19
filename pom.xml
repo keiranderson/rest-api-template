@@ -149,6 +149,12 @@
 			<version>${mule.version}</version>
 			<scope>provided</scope>
 		</dependency>
+		<!-- Added to help troubleshoot Maven MUnit test failure issue -->
+		<dependency>
+        	<groupId>org.mule.modules</groupId>
+            <artifactId>mule-module-json</artifactId>
+            <version>3.8.0</version>
+     	</dependency>
 		<!-- for testing -->
 		<dependency>
 			<groupId>org.mule.tests</groupId>
